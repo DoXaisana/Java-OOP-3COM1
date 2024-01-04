@@ -366,12 +366,13 @@ public class Main extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem4ActionPerformed
 
     private void jMenuExitMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenuExitMouseClicked
-        int data = JOptionPane.showConfirmDialog(rootPane, "ທ່ານຕ້ອງການອອກຈາກລະບົບແທ້ ຫຼື ບໍ່", "ຢືນຍັນ", JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
+        String msg = "<html><h3 style=\" font-family: Saysettha OT; font-weight: none\">ຕ້ອງການອອກຈາກລະບົບແທ້ ຫຼື ບໍ່?</h3></html>";
+        int data = JOptionPane.showConfirmDialog(rootPane, msg, "ຢືນຢັນ", JOptionPane.OK_CANCEL_OPTION);
 
         if (data == 0) {
             Login login = new Login();
             login.setVisible(true);
-            System.exit(0);
+            dispose();
         }
     }//GEN-LAST:event_jMenuExitMouseClicked
 

@@ -74,7 +74,7 @@ public class Login extends javax.swing.JFrame {
         });
         jPanel1.add(txtUser, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 100, 250, -1));
 
-        txtPassword.setFont(new java.awt.Font("Saysettha Web", 0, 16)); // NOI18N
+        txtPassword.setFont(new java.awt.Font("Saysettha OT", 0, 16)); // NOI18N
         txtPassword.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtPasswordActionPerformed(evt);
@@ -90,7 +90,7 @@ public class Login extends javax.swing.JFrame {
                 btnCancelActionPerformed(evt);
             }
         });
-        jPanel1.add(btnCancel, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 240, 100, -1));
+        jPanel1.add(btnCancel, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 240, 110, -1));
 
         btnLogin.setFont(new java.awt.Font("Saysettha Web", 0, 14)); // NOI18N
         btnLogin.setIcon(new FlatSVGIcon("image_svg/login.svg"));
