@@ -282,6 +282,11 @@ public class PanelCustomer extends javax.swing.JPanel {
         jPanel3.add(txtTelephone, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 140, 240, -1));
 
         txtId.setEditable(false);
+        txtId.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtIdActionPerformed(evt);
+            }
+        });
         jPanel3.add(txtId, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 40, 230, -1));
         jPanel3.add(txtFirstname, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 90, 230, -1));
 
@@ -504,6 +509,10 @@ public class PanelCustomer extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(null, e);
         }
     }//GEN-LAST:event_txtSearchKeyReleased
+
+    private void txtIdActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtIdActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtIdActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
