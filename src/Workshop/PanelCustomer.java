@@ -199,23 +199,23 @@ public class PanelCustomer extends javax.swing.JPanel {
 
         jLabel15.setFont(new java.awt.Font("Saysettha Web", 0, 12)); // NOI18N
         jLabel15.setText("ເບີໂທລະສັບ");
-        jPanel3.add(jLabel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 140, -1, -1));
+        jPanel3.add(jLabel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(590, 140, -1, -1));
 
         jLabel16.setFont(new java.awt.Font("Saysettha Web", 0, 12)); // NOI18N
         jLabel16.setText("ລະຫັດລູກຄ້າ");
-        jPanel3.add(jLabel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 40, -1, -1));
+        jPanel3.add(jLabel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 40, -1, -1));
 
         jLabel17.setFont(new java.awt.Font("Saysettha Web", 0, 12)); // NOI18N
         jLabel17.setText("ໍໍຊື່ລູກຄ້າ");
-        jPanel3.add(jLabel17, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 90, -1, -1));
+        jPanel3.add(jLabel17, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 90, -1, -1));
 
         jLabel18.setFont(new java.awt.Font("Saysettha Web", 0, 12)); // NOI18N
         jLabel18.setText("ນາມສະກຸນ");
-        jPanel3.add(jLabel18, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 140, -1, -1));
+        jPanel3.add(jLabel18, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 140, -1, -1));
 
         jLabel19.setFont(new java.awt.Font("Saysettha Web", 0, 12)); // NOI18N
         jLabel19.setText("ທີ່ຢູ່");
-        jPanel3.add(jLabel19, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 60, -1, -1));
+        jPanel3.add(jLabel19, new org.netbeans.lib.awtextra.AbsoluteConstraints(610, 60, -1, -1));
 
         gender.add(txtFemale);
         txtFemale.setFont(new java.awt.Font("Saysettha Web", 0, 12)); // NOI18N
@@ -225,17 +225,12 @@ public class PanelCustomer extends javax.swing.JPanel {
                 jRadioButton1ActionPerformed(evt);
             }
         });
-        jPanel3.add(txtFemale, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 180, -1, -1));
+        jPanel3.add(txtFemale, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 180, -1, -1));
 
         gender.add(txtMale);
         txtMale.setFont(new java.awt.Font("Saysettha Web", 0, 12)); // NOI18N
         txtMale.setText("ຊາຍ");
-        txtMale.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jRadioButton2ActionPerformed(evt);
-            }
-        });
-        jPanel3.add(txtMale, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 180, -1, -1));
+        jPanel3.add(txtMale, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 180, -1, -1));
 
         btnCancel.setFont(new java.awt.Font("Saysettha Web", 0, 12)); // NOI18N
         btnCancel.setText("ຍົກເລີກ");
@@ -244,7 +239,7 @@ public class PanelCustomer extends javax.swing.JPanel {
                 btnCancelActionPerformed(evt);
             }
         });
-        jPanel3.add(btnCancel, new org.netbeans.lib.awtextra.AbsoluteConstraints(630, 190, -1, -1));
+        jPanel3.add(btnCancel, new org.netbeans.lib.awtextra.AbsoluteConstraints(920, 190, -1, -1));
 
         btnAdd.setFont(new java.awt.Font("Saysettha Web", 0, 12)); // NOI18N
         btnAdd.setText("ເພີ່ມ");
@@ -253,7 +248,7 @@ public class PanelCustomer extends javax.swing.JPanel {
                 btnAddActionPerformed(evt);
             }
         });
-        jPanel3.add(btnAdd, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 190, -1, -1));
+        jPanel3.add(btnAdd, new org.netbeans.lib.awtextra.AbsoluteConstraints(650, 190, -1, -1));
 
         btnEdit.setFont(new java.awt.Font("Saysettha Web", 0, 12)); // NOI18N
         btnEdit.setText("ແກ້ໄຂ");
@@ -262,7 +257,7 @@ public class PanelCustomer extends javax.swing.JPanel {
                 btnEditActionPerformed(evt);
             }
         });
-        jPanel3.add(btnEdit, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 190, -1, -1));
+        jPanel3.add(btnEdit, new org.netbeans.lib.awtextra.AbsoluteConstraints(740, 190, -1, -1));
 
         btnDelete.setFont(new java.awt.Font("Saysettha Web", 0, 12)); // NOI18N
         btnDelete.setText("ລຶບ");
@@ -271,37 +266,32 @@ public class PanelCustomer extends javax.swing.JPanel {
                 btnDeleteActionPerformed(evt);
             }
         });
-        jPanel3.add(btnDelete, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 190, -1, -1));
+        jPanel3.add(btnDelete, new org.netbeans.lib.awtextra.AbsoluteConstraints(830, 190, -1, -1));
 
         txtAddress.setColumns(20);
         txtAddress.setRows(5);
         jScrollPane4.setViewportView(txtAddress);
 
-        jPanel3.add(jScrollPane4, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 36, 240, 90));
-        jPanel3.add(txtLastname, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 140, 230, -1));
-        jPanel3.add(txtTelephone, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 140, 240, -1));
+        jPanel3.add(jScrollPane4, new org.netbeans.lib.awtextra.AbsoluteConstraints(690, 40, 240, 90));
+        jPanel3.add(txtLastname, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 140, 230, -1));
+        jPanel3.add(txtTelephone, new org.netbeans.lib.awtextra.AbsoluteConstraints(690, 140, 240, -1));
 
         txtId.setEditable(false);
-        txtId.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtIdActionPerformed(evt);
-            }
-        });
-        jPanel3.add(txtId, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 40, 230, -1));
-        jPanel3.add(txtFirstname, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 90, 230, -1));
+        jPanel3.add(txtId, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 40, 230, -1));
+        jPanel3.add(txtFirstname, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 90, 230, -1));
 
         jLabel21.setFont(new java.awt.Font("Saysettha Web", 0, 12)); // NOI18N
         jLabel21.setText("ເພດ");
-        jPanel3.add(jLabel21, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 180, -1, -1));
+        jPanel3.add(jLabel21, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 180, -1, -1));
 
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
         jPanel6Layout.setHorizontalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
-                .addContainerGap(26, Short.MAX_VALUE)
-                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, 720, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(28, Short.MAX_VALUE))
+                .addContainerGap(100, Short.MAX_VALUE)
+                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, 1100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(100, Short.MAX_VALUE))
         );
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -311,11 +301,6 @@ public class PanelCustomer extends javax.swing.JPanel {
                 .addGap(18, 18, 18))
         );
 
-        txtSearch.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtSearchActionPerformed(evt);
-            }
-        });
         txtSearch.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 txtSearchKeyReleased(evt);
@@ -346,22 +331,14 @@ public class PanelCustomer extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(txtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 200, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 343, Short.MAX_VALUE)
                 .addGap(20, 20, 20))
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jRadioButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButton2ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jRadioButton2ActionPerformed
-
     private void jRadioButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButton1ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jRadioButton1ActionPerformed
-
-    private void txtSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtSearchActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtSearchActionPerformed
 
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
         //check Imnformation input
@@ -509,10 +486,6 @@ public class PanelCustomer extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(null, e);
         }
     }//GEN-LAST:event_txtSearchKeyReleased
-
-    private void txtIdActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtIdActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtIdActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
