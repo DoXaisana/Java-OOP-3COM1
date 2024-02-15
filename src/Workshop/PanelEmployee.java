@@ -7,22 +7,29 @@ package Workshop;
 import com.formdev.flatlaf.FlatClientProperties;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
 import javax.swing.JFrame;
 import java.sql.*;
+import java.text.SimpleDateFormat;
 import java.util.Vector;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JTable;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import mysql_connect.MysqlConnect;
+import passwordHashing.PasswordHashing;
 import validation.Validation;
+import java.util.Date;
 
 public class PanelEmployee extends javax.swing.JPanel {
 
@@ -69,6 +76,12 @@ public class PanelEmployee extends javax.swing.JPanel {
         tableUpdate();
         autoID();
         
+        //ເຊື່ອງຖັນລະຫັດຜ່ານບໍ່ໃຫ້ສະແດງຜົນ
+        jTable1.getColumnModel().getColumn(11).setMinWidth(0);
+        jTable1.getColumnModel().getColumn(11).setMaxWidth(0);
+        jTable1.getColumnModel().getColumn(11).setWidth(0);
+
+        
         //define value for gender button
         txtMale.setActionCommand("ຊາຍ");
         txtFemale.setActionCommand("ຍິງ");
@@ -78,7 +91,7 @@ public class PanelEmployee extends javax.swing.JPanel {
         txtTelephone.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "020 12345678");
         
         //ໃສ່ຮູບໃນ txtUser ແລະ txtPass
-        ImageIcon icon1 = new ImageIcon(getClass().getResource("../image/icons/search_text.png"));
+        FlatSVGIcon icon1 = new FlatSVGIcon("image_svg/search.svg");
         txtSearch.putClientProperty(FlatClientProperties.TEXT_FIELD_LEADING_ICON, icon1);
         
         //ລືບ
@@ -89,6 +102,9 @@ public class PanelEmployee extends javax.swing.JPanel {
         btnDelete.setEnabled(false);
         
         txtPassword.putClientProperty(FlatClientProperties.STYLE, "showRevealButton:true");
+        
+        //ສະແດງຮູບໃນຕາຕະລາງ, ຕ້ອງໄດ້ສ້າງຄລາດຊື່ ImageRender ເຊິ່ງໂຄ້ດໂປຣແກຣມໄດ້ສ້າງໄວ້ດ້ານລຸ່ມ
+        jTable1.getColumnModel().getColumn(13).setCellRenderer(new ImageRender());
     }
     
     //ສ້າງເມັດທອດປັບຂະໜາດຮູບພາບທີ່ຈະສະແດງທີ່ຫ້ອງ picture (label ທີ່ໃຫ້ສະແດງຮູບ)
@@ -126,12 +142,15 @@ public class PanelEmployee extends javax.swing.JPanel {
     private void tableUpdate(){
         try {
             String sql = "SELECT *FROM employee ORDER BY emp_id DESC";
+
             pst = conn.prepareStatement(sql);
             rs = pst.executeQuery();
-            DefaultTableModel d = (DefaultTableModel)jTable1.getModel();
-            jTable1.setRowHeight(30); //The height of row
+
+            DefaultTableModel d = (DefaultTableModel) jTable1.getModel();
+            jTable1.setRowHeight(100);
+            //ລືບຂໍ້ມູນໃນຕາຕະລາງ
             d.setRowCount(0);
-            while(rs.next()){
+            while (rs.next()) {
                 Vector v = new Vector();
                 v.add(rs.getString("emp_id"));
                 v.add(rs.getString("emp_name"));
@@ -144,20 +163,34 @@ public class PanelEmployee extends javax.swing.JPanel {
                 v.add(rs.getString("tel"));
                 v.add(rs.getString("start_date"));
                 v.add(rs.getString("username"));
+                v.add(rs.getString("password"));
                 v.add(rs.getString("status"));
-                v.add(rs.getString("picture"));
+                v.add(rs.getBytes("picture"));
                 d.addRow(v);
             }
-            
-            
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e);
         }
     }
     
+    //ສ້າງຄລາດເພື່ອສະແດງຮູບໃນຕາຕະລາງ ຫຼັງຈາກນັ້ນໃຫ້ເອົາໄປໃຊ້ຢູ່ Constructor
+    private class ImageRender extends DefaultTableCellRenderer {
+
+        @Override
+        public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+            JLabel jlabel = new JLabel();
+            byte[] bytes = (byte[]) value;
+            ImageIcon imageIcon = new ImageIcon(new ImageIcon(bytes).getImage().getScaledInstance(100, 90, Image.SCALE_SMOOTH));
+            jlabel.setIcon(imageIcon);
+            jlabel.setHorizontalAlignment(JLabel.CENTER);
+            jlabel.setVerticalAlignment(JLabel.CENTER);
+
+            return jlabel;
+        }
+    }
+    
     //ສ້າງເມັດທອດສ້າງ id ເພີ່ມຂຶ້ນອັດຕະຖນມັດ
     private void autoID() {
-
         try {
             String sql = "SELECT MAX(emp_id) AS max_id FROM employee";
             pst = conn.prepareStatement(sql);
@@ -181,16 +214,28 @@ public class PanelEmployee extends javax.swing.JPanel {
         txtFirstname.setText("");
         txtLastname.setText("");
         gender.clearSelection();
+        txtDateOfBirth.setDate(null);
         txtVillage.setText("");
+        txtProvince.setSelectedIndex(0);
+        txtTelephone.setText("");
+        txtStartWork.setDate(null);
         txtUser.setText("");
         txtPassword.setText("");
-        txtTelephone.setText("");
-
+        txtStatus.setSelectedIndex(0);
+        picture.setIcon(null);
         btnAdd.setEnabled(true);
         btnEdit.setEnabled(false);
         btnDelete.setEnabled(false);
-
         jTable1.clearSelection();
+    }
+    
+    //ກວດສອບທຸກຊ່ອງຂອງຟອມໄດ້ຖືກເລືອກຫຼືບໍ່
+    private boolean checkInputs() {
+        return txtFirstname.getText().isEmpty() || txtLastname.getText().isEmpty()
+                || gender.getSelection() == null || txtDateOfBirth.getDate() == null
+                || txtStartWork.getDate() == null || txtVillage.getText().isEmpty()
+                || txtTelephone.getText().isEmpty() || txtUser.getText().isEmpty()
+                || txtPassword.getText().isEmpty() || picture.getIcon() == null;
     }
 
     @SuppressWarnings("unchecked")
@@ -249,6 +294,11 @@ public class PanelEmployee extends javax.swing.JPanel {
                 "ລະຫັດ", "ຊື່", "ນາມສະກຸນ", "ເພດ", "ວັນເດືອນປີເກີດ", "ບ້ານ", "ເມືອງ", "ແຂວງ", "ເບີໂທ", "ເລີ່ມເຮັດວຽກ", "ບັນຊີເຂົ້າໃຊ້", "ລະຫັດຜ່ານ", "ສະຖານະ", "ຮູບພາບ"
             }
         ));
+        jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTable1MouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(jTable1);
 
         jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "ຈັດການຂໍ້ມູນພະນັກງານ", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Saysettha Web", 3, 14))); // NOI18N
@@ -317,14 +367,29 @@ public class PanelEmployee extends javax.swing.JPanel {
 
         btnAdd.setFont(new java.awt.Font("Saysettha Web", 0, 14)); // NOI18N
         btnAdd.setText("ເພີ່ມ");
+        btnAdd.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAddActionPerformed(evt);
+            }
+        });
         jPanel3.add(btnAdd, new org.netbeans.lib.awtextra.AbsoluteConstraints(680, 200, -1, -1));
 
         btnEdit.setFont(new java.awt.Font("Saysettha Web", 0, 14)); // NOI18N
         btnEdit.setText("ແກ້ໄຂ");
+        btnEdit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEditActionPerformed(evt);
+            }
+        });
         jPanel3.add(btnEdit, new org.netbeans.lib.awtextra.AbsoluteConstraints(770, 200, -1, -1));
 
         btnDelete.setFont(new java.awt.Font("Saysettha Web", 0, 14)); // NOI18N
         btnDelete.setText("ລຶບ");
+        btnDelete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDeleteActionPerformed(evt);
+            }
+        });
         jPanel3.add(btnDelete, new org.netbeans.lib.awtextra.AbsoluteConstraints(860, 200, -1, -1));
 
         btnCancer.setFont(new java.awt.Font("Saysettha Web", 0, 14)); // NOI18N
@@ -428,7 +493,37 @@ public class PanelEmployee extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void txtSearchKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtSearchKeyReleased
-        
+        try {
+            String sql = "SELECT * FROM employee WHERE CONCAT(emp_id, emp_name, emp_lname,tel)LIKE '%" + txtSearch.getText() + "%' ORDER BY emp_id DESC";
+
+            pst = conn.prepareStatement(sql);
+            rs = pst.executeQuery();
+
+            DefaultTableModel d = (DefaultTableModel) jTable1.getModel();
+            jTable1.setRowHeight(100);
+            //ລືບຂໍ້ມູນໃນຕາຕະລາງ
+            d.setRowCount(0);
+            while (rs.next()) {
+                Vector v = new Vector();
+                v.add(rs.getString("emp_id"));
+                v.add(rs.getString("emp_name"));
+                v.add(rs.getString("emp_lname"));
+                v.add(rs.getString("gender"));
+                v.add(rs.getString("date_of_b"));
+                v.add(rs.getString("village"));
+                v.add(rs.getString("city"));
+                v.add(rs.getString("province"));
+                v.add(rs.getString("tel"));
+                v.add(rs.getString("start_date"));
+                v.add(rs.getString("username"));
+                v.add(rs.getString("password"));
+                v.add(rs.getString("status"));
+                v.add(rs.getBytes("picture"));
+                d.addRow(v);
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e);
+        }
     }//GEN-LAST:event_txtSearchKeyReleased
 
     private void btnCancerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancerActionPerformed
@@ -471,6 +566,227 @@ public class PanelEmployee extends javax.swing.JPanel {
             System.out.println("No file Selected");
         }
     }//GEN-LAST:event_btnBroweImageActionPerformed
+
+    private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
+        if (checkInputs()) {
+            JOptionPane.showMessageDialog(null, "ກະລຸນາປ້ອນຂໍ້ມູນໃຫ້ຄົບຖ້ວນດ້ວຍ", "ຫວ່າງເປົ່າ", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        //ກວດສອບເບີໂທວ່າຖືກຕາມຮູບແບບ ຫຼື ບໍ່
+        if (!Validation.TelephoneValidation(txtTelephone.getText())) {
+            JOptionPane.showMessageDialog(null, "ກະລຸນາປ້ອນເບີໂທລະສັບໃຫ້ຖືກຕ້ອງດ້ວຍ", "ຜິດພາດ", JOptionPane.ERROR_MESSAGE);
+            txtTelephone.requestFocus();
+            return;
+        }
+        
+        //ສ້າງ ອ໊ອບເຈັດ dateFormate ເພື່ອຈັດຮູບແບບ ວັນເດືອນປີເກີດ ແລະ ວັນເລີ່ມຕົ້ນເຮັດວຽກ
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+
+        //ຮັບຮູບພາບ
+        InputStream addPicture = null;
+        try {
+            addPicture = new FileInputStream(new File(ImgPath));
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e);
+        }
+
+        try {
+            String sql = "INSERT INTO employee VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+
+            pst = conn.prepareStatement(sql);
+            pst.setString(1, txtId.getText());
+            pst.setString(2, txtFirstname.getText());
+            pst.setString(3, txtLastname.getText());
+            pst.setString(4, gender.getSelection().getActionCommand());
+            pst.setString(5, dateFormat.format(txtDateOfBirth.getDate()));
+            pst.setString(6, txtVillage.getText());
+            pst.setString(7, txtDistrict.getSelectedItem().toString());
+            pst.setString(8, txtProvince.getSelectedItem().toString());
+            pst.setString(9, txtTelephone.getText());
+            pst.setString(10, dateFormat.format(txtStartWork.getDate()));
+            pst.setBlob(11, addPicture);
+            pst.setString(12, txtUser.getText());
+            pst.setString(13, PasswordHashing.doHashing(txtPassword.getText()));
+            pst.setString(14, txtStatus.getSelectedItem().toString());
+
+            pst.executeUpdate();
+
+            FlatSVGIcon icon = new FlatSVGIcon("image_svg/done.svg");
+            JOptionPane.showMessageDialog(null, "ຂໍ້ມູນຖືກບັນທຶກລົງໃນຖານຂໍ້ມູນສໍາເລັດ", "ສໍາເລັດ", JOptionPane.WIDTH, icon);
+
+            clearForm(); //ລືບຂໍ້ມູນໃນຟອມ
+            tableUpdate(); //ສະແດງຂໍ້ມູນໃນຕາຕະລາງ
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e);
+        }
+    }//GEN-LAST:event_btnAddActionPerformed
+
+    private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
+        DefaultTableModel d = (DefaultTableModel) jTable1.getModel();
+        int selectIndex = jTable1.getSelectedRow();
+        //ຖ້າກົດເມົ້າໃສ່ບໍ່ຖືກແຖວ
+        if (selectIndex == -1) {
+            return;
+        }
+
+        txtId.setText(d.getValueAt(selectIndex, 0).toString());
+        txtFirstname.setText(d.getValueAt(selectIndex, 1).toString());
+        txtLastname.setText(d.getValueAt(selectIndex, 2).toString());
+        //ເພດ
+        String gender;
+        gender = d.getValueAt(selectIndex, 3).toString();
+        if (gender.equals("ຊາຍ")) {
+            txtMale.setSelected(true);
+        } else {
+            txtFemale.setSelected(true);
+        }
+
+        //ວັນເດືອນປີເກີດ ແລະ ວັນເດືອນປີເຂົ້າເຮັດວຽກ
+        try {
+            //ມັນ Error ຕ້ອງຂຽນ ເອງມັນຈະບໍ່ສະແດງໃຫ້ອີມພອດ import java.util.Date;
+            Date dateOfBirth = new SimpleDateFormat("yyyy-MM-dd").parse(d.getValueAt(selectIndex, 4).toString());
+            txtDateOfBirth.setDate(dateOfBirth);
+
+            Date dateStartWork = new SimpleDateFormat("yyyy-MM-dd").parse(d.getValueAt(selectIndex, 9).toString());
+            txtStartWork.setDate(dateStartWork);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e);
+        }
+
+        txtVillage.setText(d.getValueAt(selectIndex, 5).toString());
+        txtProvince.setSelectedItem(d.getValueAt(selectIndex, 7).toString());
+        txtDistrict.setSelectedItem(d.getValueAt(selectIndex, 6).toString());
+
+        txtTelephone.setText(d.getValueAt(selectIndex, 8).toString());
+        txtUser.setText(d.getValueAt(selectIndex, 10).toString());
+        oldPassword = (d.getValueAt(selectIndex, 11).toString());
+        txtStatus.setSelectedItem(d.getValueAt(selectIndex, 12).toString());
+
+        //ສະແດງຮູບ
+        try {
+            String sql = "SELECT picture FROM employee WHERE emp_id=?";
+            pst = conn.prepareStatement(sql);
+            pst.setString(1, d.getValueAt(selectIndex, 0).toString());
+            rs = pst.executeQuery();
+            if (rs.next()) {
+                picture.setIcon(resizeImage(null, rs.getBytes("picture")));
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e);
+        }
+
+        //ໃຫ້ປຸ່ມເພີ່ມໃຊ້ງານບໍ່ໄດ້
+        btnAdd.setEnabled(false);
+        btnEdit.setEnabled(true);
+        btnDelete.setEnabled(true);
+    }//GEN-LAST:event_jTable1MouseClicked
+
+    private void btnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditActionPerformed
+        String addPassword;
+        InputStream addPicture = null;
+
+        //ກວດສອບຄ່າຫວ່າງເປົ່າໃນຟອມ
+        if (txtFirstname.getText().isEmpty() || txtLastname.getText().isEmpty()
+                || txtVillage.getText().isEmpty() || txtTelephone.getText().isEmpty()
+                || txtUser.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "ກະລຸນາປ້ອນຂໍ້ມູນໃຫ້ຄົບຖ້ວນດ້ວຍ", "ຄ່າຫວ່າງເປົ່າ", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        //ກວດສອບເບີໂທວ່າຖືກຕາມຮູບແບບ ຫຼື ບໍ່
+        if (!Validation.TelephoneValidation(txtTelephone.getText())) {
+            JOptionPane.showMessageDialog(null, "ກະລຸນາປ້ອນເບີໂທລະສັບໃຫ້ຖືກຕ້ອງດ້ວຍ", "ຜິດພາດ", JOptionPane.ERROR_MESSAGE);
+            txtTelephone.requestFocus();
+            return;
+        }
+
+        if (txtPassword.getText().isEmpty()) {
+            addPassword = oldPassword;
+        } else {
+            addPassword = PasswordHashing.doHashing(txtPassword.getText());
+        }
+
+        //ສ້າງ ອ໊ອບເຈັດ dateFormate ເພື່ອຈັດຮູບແບບ ວັນເດືອນປີເກີດ ແລະ ວັນເລີ່ມຕົ້ນເຮັດວຽກ
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+
+        //ແກ້ໄຂຂໍ້ມູນລົງຖານຂໍ້ມູນ
+        try {
+            String sql = "";
+            if (ImgPath != null) {
+                try {
+                    addPicture = new FileInputStream(new File(ImgPath));
+                } catch (Exception e) {
+                    JOptionPane.showMessageDialog(null, e);
+                }
+                sql = "UPDATE employee SET emp_name=?, emp_lname=?, gender=?, date_of_b=?, village=?, city=?, province=?, "
+                        + "tel=?, start_date=?, picture=?, username=?, password=?, status=?  WHERE emp_id=?";
+                pst = conn.prepareStatement(sql);
+                pst.setString(1, txtFirstname.getText());
+                pst.setString(2, txtLastname.getText());
+                pst.setString(3, gender.getSelection().getActionCommand());
+                pst.setString(4, dateFormat.format(txtDateOfBirth.getDate()));
+                pst.setString(5, txtVillage.getText());
+                pst.setString(6, txtDistrict.getSelectedItem().toString());
+                pst.setString(7, txtProvince.getSelectedItem().toString());
+                pst.setString(8, txtTelephone.getText());
+                pst.setString(9, dateFormat.format(txtStartWork.getDate()));
+                pst.setBlob(10, addPicture);
+                pst.setString(11, txtUser.getText());
+                pst.setString(12, addPassword);
+                pst.setString(13, txtStatus.getSelectedItem().toString());
+                pst.setString(14, txtId.getText());
+            } else {
+                sql = "UPDATE employee SET emp_name=?, emp_lname=?, gender=?, date_of_b=?, village=?, city=?, province=?, "
+                        + "tel=?, start_date=?, username=?, password=?, status=? WHERE emp_id=?";
+                pst = conn.prepareStatement(sql);
+                pst.setString(1, txtFirstname.getText());
+                pst.setString(2, txtLastname.getText());
+                pst.setString(3, gender.getSelection().getActionCommand());
+                pst.setString(4, dateFormat.format(txtDateOfBirth.getDate()));
+                pst.setString(5, txtVillage.getText());
+                pst.setString(6, txtDistrict.getSelectedItem().toString());
+                pst.setString(7, txtProvince.getSelectedItem().toString());
+                pst.setString(8, txtTelephone.getText());
+                pst.setString(9, dateFormat.format(txtStartWork.getDate()));
+                pst.setString(10, txtUser.getText());
+                pst.setString(11, addPassword);
+                pst.setString(12, txtStatus.getSelectedItem().toString());
+                pst.setString(13, txtId.getText());
+            }
+
+            if (pst.executeUpdate() > 0) {
+                FlatSVGIcon icon = new FlatSVGIcon("image_svg/done.svg");
+                JOptionPane.showMessageDialog(null, "ປັບປຸງຂໍ້ມູນໃນຖານຂໍ້ມູນສໍາເລັດ", "ສໍາເລັດ", JOptionPane.WIDTH, icon);
+
+                clearForm();
+                tableUpdate();
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e);
+        }
+    }//GEN-LAST:event_btnEditActionPerformed
+
+    private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
+        // ຢືນຢັນການລືບ
+        int data = JOptionPane.showConfirmDialog(null, "ທ່ານຕ້ອງການລືບຂໍ້ມູນລາຍການນີ້ແທ້ ຫຼື ບໍ່?", "ຢືນຢັນ", JOptionPane.OK_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE);
+        if (data != 0) {
+            clearForm();
+            return;
+        }
+
+        try {
+            String sql = "DELETE FROM employee WHERE emp_id=? ";
+            pst = conn.prepareStatement(sql);
+            pst.setString(1, txtId.getText());
+            pst.executeUpdate();
+            clearForm();
+            tableUpdate();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e);
+        }
+    }//GEN-LAST:event_btnDeleteActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

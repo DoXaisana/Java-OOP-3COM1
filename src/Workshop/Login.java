@@ -28,7 +28,7 @@ public class Login extends javax.swing.JFrame {
         setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("../image/logo.png")));
         
         //ປຽນສີແຖບ Title bar ດ້ານເທິງ
-        getRootPane().putClientProperty(FlatClientProperties.TITLE_BAR_BACKGROUND, new Color(220, 220, 220));
+        getRootPane().putClientProperty(FlatClientProperties.TITLE_BAR_BACKGROUND, new Color(30, 30, 30));
 
         //PlaceHolder
         txtUser.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "ບັນຊີເຂົ້າໃຊ້");
@@ -173,8 +173,8 @@ public class Login extends javax.swing.JFrame {
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-        FlatLightLaf.setup();
-        //FlatDarkLaf.setup();
+        //FlatLightLaf.setup();
+        FlatDarkLaf.setup();
         //FlatIntelliJLaf.setup();
 
         UIManager.put("defaultFont", new Font("Saysettha web", Font.PLAIN, 16));

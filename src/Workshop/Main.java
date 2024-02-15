@@ -36,7 +36,7 @@ public class Main extends javax.swing.JFrame {
         this.setExtendedState(JFrame.MAXIMIZED_BOTH);
 
         //ປຽນສີແຖບ Title bar ດ້ານເທິງ
-        getRootPane().putClientProperty(FlatClientProperties.TITLE_BAR_BACKGROUND, new Color(220, 220, 220));
+        getRootPane().putClientProperty(FlatClientProperties.TITLE_BAR_BACKGROUND, new Color(30, 30, 30));
         getRootPane().putClientProperty(FlatClientProperties.TITLE_BAR_SHOW_ICON, false); //ບໍ່ສະແດງ Icon ທີ່ title bar
 
         //
@@ -267,6 +267,11 @@ public class Main extends javax.swing.JFrame {
         jMenuProfiles.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jMenuProfiles.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         jMenuProfiles.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jMenuProfiles.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jMenuProfilesMouseClicked(evt);
+            }
+        });
         jMenuBar2.add(jMenuProfiles);
 
         jMenuProfiles1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/icons/change_Theme.png"))); // NOI18N
@@ -475,6 +480,10 @@ public class Main extends javax.swing.JFrame {
             System.exit(0);
         }
     }//GEN-LAST:event_formWindowClosing
+
+    private void jMenuProfilesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenuProfilesMouseClicked
+        showPanel(new PanelProfile(id, name, status));
+    }//GEN-LAST:event_jMenuProfilesMouseClicked
 
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
